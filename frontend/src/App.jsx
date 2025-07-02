@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 import ToggleStatusButton from "./ToggleStatusButton";
-
-const socket = io("http://localhost:8000");
 
 function App() {
   const [dishes, setDishes] = useState([]);
@@ -15,16 +12,6 @@ function App() {
 
   useEffect(() => {
     fetchDishes();
-    socket.on("connect", () => console.log("Socket connected"));
-    socket.on("message", (msg) => {
-      setDishes((prev) =>
-        prev.map((dish) =>
-          dish.dishId === msg.dishId
-            ? { ...dish, isPublished: msg.isPublished }
-            : dish
-        )
-      );
-    });
   }, []);
 
   return (
